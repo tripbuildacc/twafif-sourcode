@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Tripweb Tools</title>
+<link rel="icon" type="image/png" href="https://tripweb.page.gd/library/weblogo.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+html{font-size:16px}
+*{-webkit-text-size-adjust:100%;text-size-adjust:100%;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#1e1e1e;color:#fff;margin:0;padding:0}
+header{background:#2a2a2a;border-bottom:1px solid #3d3d3d;color:#ffcc00;text-align:center;font-weight:600;padding:18px 0;position:sticky;top:0;z-index:1000;font-size:1.3rem}
+.container{max-width:720px;margin:30px auto;padding:0 15px;display:grid;gap:20px;grid-template-columns:1fr;}
+.app{background:#2a2a2a;border:1px solid #3d3d3d;border-radius:12px;padding:16px;font-size:.9rem}
+.app-header{display:flex;justify-content:space-between;align-items:flex-start}
+.app-title{font-size:1.1rem;font-weight:600;color:#fff}
+.app-desc{font-size:.8rem;color:#bbb;margin:6px 0;line-height:1.4}
+.textarea {
+  width:100%;
+  min-height:120px;
+  resize:vertical;
+  border-radius:8px;
+  border:1px solid #3d3d3d;
+  background:#131313;
+  color:#fff;
+  padding:10px;
+  font-size:.95rem;
+}
+.resultlink {
+  width:100%;
+  border-radius:8px;
+  border:1px solid #3d3d3d;
+  background:#131313;
+  color:#ffcc00;
+  padding:10px;
+  font-size:.85rem;
+  word-break:break-all;
+}
+.controls {display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn {background:#ffcc00;color:#111;border:none;padding:8px 14px;border-radius:8px;font-weight:600;cursor:pointer}
+.btn:active{transform:scale(.97)}
+</style>
+</head>
+<body>
+
+<header>Tripweb Tools</header>
+
+<div class="container">
+  <div class="app">
+
+    <div class="app-header">
+      <div class="app-title">source code download</div>
+    </div>
+
+    <div class="app-desc">create an API that can download the source code of a website in real time</div>
+
+    <div class="label-small" style="color:#ffcc00;margin-bottom:4px;">Input url</div>
+    <textarea id="inputText" class="textarea" placeholder="Enter url..."></textarea>
+    <div class="app-desc">*api : https://tripweb.page.gd/apps/sourcode/apidownload?url=*</div>
+
+    <div class="label-small" style="color:#ffcc00;margin:12px 0 4px;">Generated API Link</div>
+    <div id="apiLink" class="resultlink">https://tripweb.page.gd/apps/sourcode/apidownload?url=</div>
+
+    <div class="controls">
+      <button class="btn" id="openBtn">download</button>
+      <button class="btn" id="copyBtn">Copy</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const input = document.getElementById("inputText");
+const apiLinkBox = document.getElementById("apiLink");
+const openBtn = document.getElementById("openBtn");
+const copyBtn = document.getElementById("copyBtn");
+
+function update(){
+  const txt = encodeURIComponent(input.value.trim());
+  const url = "https://tripweb.page.gd/apps/sourcode/apidownload?url=" + txt;
+  apiLinkBox.textContent = url;
+}
+
+input.addEventListener("input", update);
+update();
+
+// open same tab
+openBtn.addEventListener("click", ()=>{
+  location.href = apiLinkBox.textContent;
+});
+
+// copy
+copyBtn.addEventListener("click", async ()=>{
+  try{
+    await navigator.clipboard.writeText(apiLinkBox.textContent);
+    copyBtn.textContent = "Copied";
+    setTimeout(()=>copyBtn.textContent="Copy",900);
+  }catch(e){
+    const r = document.createRange();
+    r.selectNode(apiLinkBox);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+    copyBtn.textContent = "Copied";
+    setTimeout(()=>copyBtn.textContent="Copy",900);
+  }
+});
+</script>
+
+</body>
+</html>
